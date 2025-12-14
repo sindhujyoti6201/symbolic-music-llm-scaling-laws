@@ -1,0 +1,119 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# Data files (large datasets)
+data/
+!data/.gitkeep
+data/*.tar.gz
+data/*.zip
+data/lmd_matched/
+data/processed/
+data/msd/
+
+# Results and outputs
+results/
+*.pkl
+*.pickle
+*.h5
+*.hdf5
+
+# Model checkpoints and outputs
+checkpoints/
+models/
+outputs/
+logs/
+wandb/
+runs/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.out
+*.err
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# LaTeX
+*.aux
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.toc
+*.out
+*.log
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+
+# Project specific
+preprocessing.log
+*.abc
+match_scores.json
+
+# Large files
+*.mid
+*.midi
+*.mp3
+*.wav
+*.flac
+/data
+
+

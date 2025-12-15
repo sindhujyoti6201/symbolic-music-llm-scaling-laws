@@ -1,0 +1,11 @@
+name: large
+model:
+  d_model: 768
+  n_layers: 8
+  n_heads: 8
+  d_ff: 3072
+  max_seq_length: 5000
+  dropout: 0.1
+description: "Large model with ~50M parameters"
+
+

@@ -20,8 +20,12 @@ def run_training(config_path: Path, output_base_dir: Path, data_dir: Path,
     print(f"{'='*80}\n")
     
     # Run training script
+    # Get the project root directory (parent of experiments/)
+    project_root = Path(__file__).parent.parent
+    train_script = project_root / 'experiments' / 'train.py'
+    
     cmd = [
-        sys.executable, 'train.py',
+        sys.executable, str(train_script),
         '--config', str(config_path),
         '--data-dir', str(data_dir),
         '--output-dir', str(output_base_dir),

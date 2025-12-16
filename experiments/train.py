@@ -4,6 +4,7 @@ Training script for MusicTransformer models.
 Maintains consistent hyperparameters across all model sizes.
 """
 
+import sys
 import argparse
 import json
 import time
@@ -13,6 +14,9 @@ import torch.nn as nn
 from torch.optim import AdamW
 from torch.optim.lr_scheduler import CosineAnnealingLR
 import yaml
+
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from models.transformer import MusicTransformer
 from utils.data_loader import MusicDataLoader, load_tokenizer

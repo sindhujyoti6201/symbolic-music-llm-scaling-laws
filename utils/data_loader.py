@@ -23,40 +23,51 @@ def load_tokenizer(tokenizer_path: Path):
     if str(project_root) not in sys.path:
         sys.path.insert(0, str(project_root))
     
-    with open(tokenizer_path, 'rb') as f:
-        tokenizer_data = pickle.load(f)
+    # Try to import from the new tokenizer.py file first
+    tokenizer_module_path = project_root / "data-collection-and-preprocessing" / "tokenizer.py"
     
-    # Import MusicTokenizer from the preprocessing script
-    # The directory name has hyphens, so we need to load it as a module
-    preprocessing_path = project_root / "data-collection-and-preprocessing" / "data_preprocessing.py"
-    
-    if preprocessing_path.exists():
-        spec = importlib.util.spec_from_file_location("data_preprocessing", preprocessing_path)
-        data_preprocessing = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(data_preprocessing)
-        MusicTokenizer = data_preprocessing.MusicTokenizer
+    if tokenizer_module_path.exists():
+        spec = importlib.util.spec_from_file_location("tokenizer", tokenizer_module_path)
+        tokenizer_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(tokenizer_module)
+        MusicTokenizer = tokenizer_module.MusicTokenizer
     else:
-        # Fallback: try to import directly (might work if directory is in path)
-        try:
-            import data_preprocessing
+        # Fallback: try to load from data_preprocessing.py (old location)
+        preprocessing_path = project_root / "data-collection-and-preprocessing" / "data_preprocessing.py"
+        
+        if preprocessing_path.exists():
+            spec = importlib.util.spec_from_file_location("data_preprocessing", preprocessing_path)
+            data_preprocessing = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(data_preprocessing)
             MusicTokenizer = data_preprocessing.MusicTokenizer
-        except ImportError:
-            # Last resort: create a minimal tokenizer class
-            class MusicTokenizer:
-                def __init__(self):
-                    self.vocab = {}
-                    self.token_to_id = {}
-                    self.id_to_token = {}
-                    self.vocab_size = 0
-                    self.special_tokens = {}
+        else:
+            # Last resort: try direct import
+            try:
+                from data_collection_and_preprocessing.tokenizer import MusicTokenizer
+            except ImportError:
+                # Create a minimal tokenizer class
+                class MusicTokenizer:
+                    def __init__(self):
+                        self.vocab = {}
+                        self.token_to_id = {}
+                        self.id_to_token = {}
+                        self.vocab_size = 0
+                        self.special_tokens = {}
     
-    # Reconstruct tokenizer object
-    tokenizer = MusicTokenizer()
-    tokenizer.vocab = tokenizer_data['vocab']
-    tokenizer.token_to_id = tokenizer_data['token_to_id']
-    tokenizer.id_to_token = tokenizer_data['id_to_token']
-    tokenizer.vocab_size = tokenizer_data['vocab_size']
-    tokenizer.special_tokens = tokenizer_data['special_tokens']
+    # Load tokenizer using the class method if available, otherwise reconstruct manually
+    try:
+        tokenizer = MusicTokenizer.load(tokenizer_path)
+    except (AttributeError, TypeError):
+        # Fallback: reconstruct manually
+        with open(tokenizer_path, 'rb') as f:
+            tokenizer_data = pickle.load(f)
+        
+        tokenizer = MusicTokenizer()
+        tokenizer.vocab = tokenizer_data['vocab']
+        tokenizer.token_to_id = tokenizer_data['token_to_id']
+        tokenizer.id_to_token = tokenizer_data['id_to_token']
+        tokenizer.vocab_size = tokenizer_data['vocab_size']
+        tokenizer.special_tokens = tokenizer_data['special_tokens']
     
     return tokenizer
 

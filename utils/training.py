@@ -86,7 +86,7 @@ def train_one_epoch(model, train_loader, optimizer, scheduler, device, log_inter
         
         except RuntimeError as e:
             if "out of memory" in str(e) or "MPS" in str(e):
-                print(f"\n⚠ Out of memory at step {step}")
+                print(f"\nWARNING: Out of memory at step {step}")
                 print(f"  Error: {e}")
                 print(f"  Clearing cache and skipping batch...")
                 
@@ -116,9 +116,9 @@ def train_one_epoch(model, train_loader, optimizer, scheduler, device, log_inter
     if skipped_batches > 0:
         total_batches = step + 1
         skip_rate = skipped_batches / total_batches * 100
-        print(f"\n⚠ WARNING: Skipped {skipped_batches}/{total_batches} batches ({skip_rate:.1f}%) due to OOM")
+        print(f"\nWARNING: Skipped {skipped_batches}/{total_batches} batches ({skip_rate:.1f}%) due to OOM")
         if skip_rate > 50:
-            print(f"  ⚠ CRITICAL: More than 50% of batches skipped!")
+            print(f"  CRITICAL: More than 50% of batches skipped!")
             print(f"  Recommendations:")
             print(f"    1. Reduce batch size further (currently using device-appropriate size)")
             print(f"    2. Use a smaller model (set USE_XL_MODEL=False to use 'large' instead)")
@@ -162,7 +162,7 @@ def evaluate(model, val_loader, device):
         
         except RuntimeError as e:
             if "out of memory" in str(e) or "MPS" in str(e):
-                print(f"⚠ OOM during evaluation, skipping batch")
+                print(f"WARNING: OOM during evaluation, skipping batch")
                 if device.type == 'mps':
                     torch.mps.empty_cache()
                 continue

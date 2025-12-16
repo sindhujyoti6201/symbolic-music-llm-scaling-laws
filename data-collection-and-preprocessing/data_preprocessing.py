@@ -872,7 +872,7 @@ def generate_statistics(
     print(f"  Sequence length: {MIN_SEQUENCE_LENGTH}-{MAX_SEQUENCE_LENGTH} tokens")
     print(f"  Train tokens requirement: {MIN_TRAIN_TOKENS:,} ({MIN_TRAIN_TOKENS/1e6:.0f}M)")
     print(f"  Train tokens achieved: {train_tokens:,} ({train_tokens/1e6:.1f}M)")
-    print(f"  Meets requirement: {'✓ YES' if train_tokens >= MIN_TRAIN_TOKENS else '✗ NO'}")
+    print(f"  Meets requirement: {'YES' if train_tokens >= MIN_TRAIN_TOKENS else 'NO'}")
     
     print("=" * 60)
 

@@ -238,7 +238,7 @@ def generate_samples(
     with open(samples_dir / "samples_metadata.json", 'w') as f:
         json.dump(generated_samples, f, indent=2)
     
-    print(f"\n✓ Generated {num_samples} samples")
+    print(f"\nGenerated {num_samples} samples")
     print(f"Samples saved to: {samples_dir}")
     
     return generated_samples

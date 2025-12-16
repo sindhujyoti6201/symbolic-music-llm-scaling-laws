@@ -49,16 +49,16 @@ def download_file(url: str, destination: Path, description: str = "File"):
         description: Description for progress bar
     """
     if destination.exists():
-        print(f"✓ {description} already exists: {destination}")
+        print(f"{description} already exists: {destination}")
         return True
     
     print(f"Downloading {description}...")
     try:
         urllib.request.urlretrieve(url, destination, DownloadProgressBar())
-        print(f"✓ Successfully downloaded {description}")
+        print(f"Successfully downloaded {description}")
         return True
     except Exception as e:
-        print(f"✗ Error downloading {description}: {e}")
+        print(f"ERROR: Error downloading {description}: {e}")
         return False
 
 
@@ -71,7 +71,7 @@ def extract_tar_gz(tar_path: Path, extract_to: Path):
         extract_to: Directory to extract to
     """
     if not tar_path.exists():
-        print(f"✗ Tar file not found: {tar_path}")
+        print(f"ERROR: Tar file not found: {tar_path}")
         return False
     
     print(f"Extracting {tar_path.name} to {extract_to}...")
@@ -86,10 +86,10 @@ def extract_tar_gz(tar_path: Path, extract_to: Path):
                     tar.extract(member, extract_to)
                     pbar.update(member.size)
         
-        print(f"✓ Successfully extracted to {extract_to}")
+        print(f"Successfully extracted to {extract_to}")
         return True
     except Exception as e:
-        print(f"✗ Error extracting {tar_path}: {e}")
+        print(f"ERROR: Error extracting {tar_path}: {e}")
         return False
 
 
@@ -115,7 +115,7 @@ def download_lmd_matched():
     # Extract to data directory
     extract_to = DATA_DIR / "lmd_matched"
     if extract_to.exists():
-        print(f"✓ LMD-matched already extracted to {extract_to}")
+        print(f"LMD-matched already extracted to {extract_to}")
         print("  (Delete this directory if you want to re-extract)")
         return True
     
@@ -130,7 +130,7 @@ def download_lmd_matched():
         # If extraction created a differently named folder, rename it
         if len(extracted_folders) == 1:
             extracted_folders[0].rename(extract_to)
-            print(f"✓ Renamed extracted folder to {extract_to}")
+            print(f"Renamed extracted folder to {extract_to}")
     
     return True
 
@@ -163,7 +163,7 @@ def main():
     if download_lmd_matched():
         print()
         print("=" * 60)
-        print("✓ Dataset download and extraction complete!")
+        print("Dataset download and extraction complete!")
         print("=" * 60)
         print()
         print("Next steps:")
@@ -174,7 +174,7 @@ def main():
     else:
         print()
         print("=" * 60)
-        print("✗ Dataset download/extraction failed")
+        print("ERROR: Dataset download/extraction failed")
         print("=" * 60)
         return 1
 

@@ -42,14 +42,14 @@ def convert_midi_to_abc_parallel(
     try:
         from joblib import Parallel, delayed
         USE_JOBLIB = True
-        print("✓ joblib available - using parallel processing")
+        print("joblib available - using parallel processing")
     except ImportError:
-        print("⚠ joblib not available - trying multiprocessing")
+        print("WARNING: joblib not available - trying multiprocessing")
         try:
             from multiprocessing import Pool
             USE_MULTIPROCESSING = True
         except ImportError:
-            print("⚠ multiprocessing not available - using sequential processing")
+            print("WARNING: multiprocessing not available - using sequential processing")
     
     # Prepare arguments for processing
     args_list = [(str(midi_file), str(output_dir)) for midi_file in midi_files]
@@ -75,7 +75,7 @@ def convert_midi_to_abc_parallel(
                 chunk_results = Parallel(n_jobs=num_workers, backend='loky', verbose=0)(
                     delayed(convert_single_midi_worker)(args) for args in chunk_args
                 )
-                print(f"  ✓ Completed chunk {chunk_idx + 1}/{total_chunks}")
+                print(f"  Completed chunk {chunk_idx + 1}/{total_chunks}")
             except Exception as e:
                 print(f"  joblib parallel failed ({e}), falling back to sequential")
                 USE_JOBLIB = False
@@ -84,7 +84,7 @@ def convert_midi_to_abc_parallel(
             try:
                 with Pool(processes=num_workers) as pool:
                     chunk_results = pool.map(convert_single_midi_worker, chunk_args)
-                print(f"  ✓ Completed chunk {chunk_idx + 1}/{total_chunks}")
+                print(f"  Completed chunk {chunk_idx + 1}/{total_chunks}")
             except Exception as e:
                 print(f"  multiprocessing failed ({e}), falling back to sequential")
                 USE_MULTIPROCESSING = False
